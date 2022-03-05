@@ -16,6 +16,7 @@ public:
         right=NULL;
     }
 };
+// height of tree
 int height(Node *root)
 {
     if(root==NULL)
@@ -38,7 +39,7 @@ int isbalance(Node* root)
     else
         return 1;
 }
-
+// to check if it is balanced or not
 bool isbalance(Node *root)
 {
     if(root==NULL)
