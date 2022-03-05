@@ -23,7 +23,7 @@ int height(Node *root)
         return 0;
     return 1+max(height(root->left),height(root->right));
 }
-
+//another apporoch to check balancing of tree
 int isbalance(Node* root)
 {
     if(root==NULL)
