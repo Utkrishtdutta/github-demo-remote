@@ -1,0 +1,151 @@
+//Question: -soln
+
+#include <iostream>
+#include<queue>
+#include<stack>
+using namespace std;
+class Node
+{
+public:
+    int val;
+    Node *left,*right;
+    Node(int d)
+    {
+        val=d;
+        left=NULL;
+        right=NULL;
+    }
+};
+int height(Node *root)
+{
+    if(root==NULL)
+        return 0;
+    return 1+max(height(root->left),height(root->right));
+}
+
+int isbalance(Node* root)
+{
+    if(root==NULL)
+        return 0;
+    int lh=isbalance(root->left);
+    if(lh==-1)
+        return -1;
+    int rh=isbalance(root->right);
+    if(rh==-1)
+        return -1;
+    if(abs(lh-rh)>1)
+        return -1;
+    else
+        return 1;
+}
+
+bool isbalance(Node *root)
+{
+    if(root==NULL)
+        return true;
+    int lh=height(root->left);
+    int rh=height(root->right);
+    return (abs(lh-rh)<=1 && isbalance(root->left) && isbalance(root->right));
+}
+int width(Node *root)
+{
+    if(root==NULL)
+        return 0;
+    queue<Node*>q;
+    q.push(root);
+    int res=0;
+    bool rev=false;
+    stack<Node*>st;
+    while(!q.empty())
+    {
+        int count=q.size();
+        res=max(res,count);
+        for(int i=0;i<count;i++)
+        {
+            Node *curr=q.front();
+            q.pop();
+            if(rev==true)
+                st.push(curr);
+            else
+                cout<<curr->val<<" ";
+            if(curr->left!=NULL)
+                q.push(curr->left);
+            if(curr->right!=NULL)
+                q.push(curr->right);
+        }
+        while(!st.empty())
+        {
+            Node *temp=st.top();
+            cout<<temp->val<<" ";
+            st.pop();
+        }
+        rev=!rev;
+    }
+    return res;
+}
+//print the tree
+
+void print(Node *root)
+{
+    stack<Node*>st1;
+    stack<Node*>st2;
+    st1.push(root);
+    while(!st1.empty() || !st2.empty()){
+    while(!st1.empty())
+    {
+        Node *curr=st1.top();
+        st1.pop();
+        cout<<curr->val<<" ";
+        if(curr->right!=NULL)
+            st2.push(curr->right);
+        if(curr->left!=NULL)
+            st2.push(curr->left);
+    }
+    while(!st2.empty())
+    {
+        Node *curr=st2.top();
+        st2.pop();
+        cout<<curr->val<<" ";
+        if(curr->left!=NULL)
+            st1.push(curr->left);
+        if(curr->right!=NULL)
+            st1.push(curr->right);
+    }
+    }
+}
+int diameter(Node *root)
+{
+    if(root==NULL)
+        return NULL;
+    int d=1+height(root->left)+height(root->right);
+    int d1=diameter(root->left);
+    int d2=diameter(root->right);
+    return max(d,max(d1,d2));
+}
+//height of tree
+int res=0;
+int height(Node *root)
+{
+
+    if(root==NULL)
+        return 0;
+    int l=height(root->left);
+    int h=height(root->right);
+    res=max(res,l+h+1);
+    return 1+max(l,h);
+}
+//main function
+int main()
+{
+    Node *root=new Node(10);
+    root->left=new Node(20);
+    root->left->right=new Node(30);
+    root->right=new Node(40);
+    root->left->left=new Node(50);
+    root->right->left=new Node(60);
+    root->right->right=new Node(70);
+    cout<<height(root);
+    cout<<res;
+    return 0;
+}
+//Now whole program will run withtree stack and queue
